@@ -1,4 +1,4 @@
-package com.culturecompassmercury
+package com.culture.compass.mercury
 
 import android.app.Application
 import com.facebook.react.PackageList

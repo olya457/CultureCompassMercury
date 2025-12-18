@@ -1,4 +1,4 @@
-package com.culturecompassmercury
+package com.culture.compass.mercury
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
