@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.culture.compass.mercury"
+    namespace "com.supersetcompass"
     defaultConfig {
-        applicationId "com.culture.compass.mercury"
+        applicationId "com.supersetcompass"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
