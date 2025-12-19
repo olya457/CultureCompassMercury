@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   bottomCard: {
-    backgroundColor: 'rgba(0, 0, 0, 0.92)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 24,
     paddingHorizontal: 20,
     paddingVertical: 25,

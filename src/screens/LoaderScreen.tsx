@@ -36,12 +36,13 @@ export default function LoaderScreen({ navigation }: Props) {
   }, [width, safeH]);
 
   const html = useMemo(() => {
+  
     return `
 <!doctype html>
 <html>
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <style>
     html, body {
       margin: 0;
@@ -51,77 +52,46 @@ export default function LoaderScreen({ navigation }: Props) {
       background: transparent !important;
       overflow: hidden;
     }
-
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       background: transparent !important;
     }
-
-    .orb {
-      width: 100%;
-      height: 100%;
-      animation: rotate 26s linear infinite;
+    .svg-sun{
+      width:100%;
+      height:100%;
       transform-origin: 50% 50%;
+      animation: spin 25s linear infinite, sun-glow 3s linear infinite;
     }
-
-    .ring {
-      fill: none;
-      stroke: url(#goldGradient);
-      stroke-width: 14;
-      stroke-linecap: round;
-      stroke-dasharray: 260;
-      stroke-dashoffset: 0;
-      animation: pulse 3.2s ease-in-out infinite;
-      filter: drop-shadow(0 0 12px rgba(212,175,55,0.65));
+    #sun{
+      stroke-width:18;
+      stroke-dasharray:2;
+      stroke-dashoffset:2;
     }
-
-    .core {
-      fill: url(#coreGradient);
-      animation: corePulse 2.8s ease-in-out infinite;
-      transform-origin: 50% 50%;
-      filter: drop-shadow(0 0 18px rgba(255,215,120,0.9));
+    @keyframes sun-glow {
+      0%   { fill: #f1c40f; stroke:#f1c40f; }
+      50%  { fill: #e67e22; stroke:#e67e22; }
+      100% { fill: #f1c40f; stroke:#f1c40f; }
     }
-
-    @keyframes rotate {
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes pulse {
-      0%   { stroke-dashoffset: 0; opacity: 0.9; }
-      50%  { stroke-dashoffset: 60; opacity: 1; }
-      100% { stroke-dashoffset: 0; opacity: 0.9; }
-    }
-
-    @keyframes corePulse {
-      0%   { transform: scale(0.92); opacity: 0.85; }
-      50%  { transform: scale(1); opacity: 1; }
-      100% { transform: scale(0.92); opacity: 0.85; }
-    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
-  <svg class="orb" viewBox="0 0 200 200" aria-hidden="true">
-    <defs>
-      <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#fff1a8"/>
-        <stop offset="45%" stop-color="#d4af37"/>
-        <stop offset="100%" stop-color="#b8891a"/>
-      </linearGradient>
-
-      <radialGradient id="coreGradient">
-        <stop offset="0%" stop-color="#fff6c2"/>
-        <stop offset="70%" stop-color="#e6b94d"/>
-        <stop offset="100%" stop-color="#b8891a"/>
-      </radialGradient>
-    </defs>
-
-    <!-- outer ring -->
-    <circle class="ring" cx="100" cy="100" r="68" />
-
-    <!-- glowing core -->
-    <circle class="core" cx="100" cy="100" r="28" />
+  <svg class="svg-sun" viewBox="0 0 200 200" aria-hidden="true">
+    <g>
+      <circle id="sun" cx="100" cy="100" r="55" fill="#f1c40f" stroke="#f1c40f"></circle>
+      <g stroke="#f1c40f" stroke-width="10" stroke-linecap="round">
+        <line x1="100" y1="10"  x2="100" y2="35"></line>
+        <line x1="100" y1="165" x2="100" y2="190"></line>
+        <line x1="10"  y1="100" x2="35"  y2="100"></line>
+        <line x1="165" y1="100" x2="190" y2="100"></line>
+        <line x1="30"  y1="30"  x2="48"  y2="48"></line>
+        <line x1="152" y1="152" x2="170" y2="170"></line>
+        <line x1="30"  y1="170" x2="48"  y2="152"></line>
+        <line x1="152" y1="48"  x2="170" y2="30"></line>
+      </g>
+    </g>
   </svg>
 </body>
 </html>
@@ -138,12 +108,7 @@ export default function LoaderScreen({ navigation }: Props) {
 
   return (
     <ImageBackground source={BG} style={styles.bg} resizeMode="cover">
-      <View
-        style={[
-          styles.centerWrap,
-          { paddingTop: insets.top, paddingBottom: insets.bottom },
-        ]}
-      >
+      <View style={[styles.centerWrap, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <WebView
           originWhitelist={['*']}
           source={{ html }}
