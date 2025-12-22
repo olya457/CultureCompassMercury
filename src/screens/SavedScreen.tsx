@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -18,17 +18,12 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { IMAGES } from '../data/images';
 import { getSavedPlaces, removeSavedPlace, type SavedPlace } from '../storage/savedPlaces';
 
-const { width: W, height: H } = Dimensions.get('window');
+const { height: H } = Dimensions.get('window');
 const IS_TINY = H < 690;
 
 const BG = require('../assets/background.png');
-const ICON_BOOKMARK = require('../assets/ic_bookmark.png');
 const ICON_BOOKMARK_FILLED = require('../assets/ic_bookmark_filled.png');
 const ICON_MAP = require('../assets/ic_map.png');
-
-function StarsRow({ count }: { count: number }) {
-  return <Text style={styles.stars}>{new Array(count).fill('★').join('')}</Text>;
-}
 
 export default function SavedScreen() {
   const navigation = useNavigation<any>();
@@ -36,7 +31,6 @@ export default function SavedScreen() {
   const headerTop = Platform.OS === 'android' ? insets.top + 20 : insets.top;
 
   const [items, setItems] = useState<SavedPlace[]>([]);
-
   const a = useRef(new Animated.Value(0)).current;
 
   const runIn = () => {
@@ -57,7 +51,7 @@ export default function SavedScreen() {
   useEffect(() => {
     load();
     runIn();
-  }, []);
+  }, [load]);
 
   useFocusEffect(
     useCallback(() => {
@@ -95,9 +89,7 @@ export default function SavedScreen() {
           {
             opacity: a,
             transform: [
-              {
-                translateY: a.interpolate({ inputRange: [0, 1], outputRange: [-6, 0] }),
-              },
+              { translateY: a.interpolate({ inputRange: [0, 1], outputRange: [-6, 0] }) },
             ],
           },
         ]}
@@ -106,18 +98,26 @@ export default function SavedScreen() {
       </Animated.View>
 
       <Animated.View
-        style={{
-          flex: 1,
-          opacity: a,
-          transform: [{ translateY: a.interpolate({ inputRange: [0, 1], outputRange: [10, 0] }) }],
-        }}
+        style={[
+          styles.body,
+          {
+            opacity: a,
+            transform: [
+              { translateY: a.interpolate({ inputRange: [0, 1], outputRange: [10, 0] }) },
+            ],
+          },
+        ]}
       >
         {empty ? (
           <View style={styles.emptyWrap}>
             <Text style={styles.emptyText}>No saved places yet</Text>
           </View>
         ) : (
-          <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            contentContainerStyle={styles.list}
+            showsVerticalScrollIndicator={false}
+            scrollIndicatorInsets={{ bottom: 60 }}
+          >
             {items.map((p) => {
               const img = IMAGES[p.imageKey] ?? IMAGES.fallback;
 
@@ -137,16 +137,25 @@ export default function SavedScreen() {
                     </Text>
 
                     <View style={styles.rowActions}>
-                      <Pressable onPress={() => openCategory(p)} style={({ pressed }) => [styles.btnYellow, pressed && styles.pressed]}>
+                      <Pressable
+                        onPress={() => openCategory(p)}
+                        style={({ pressed }) => [styles.btnYellow, pressed && styles.pressed]}
+                      >
                         <Text style={styles.btnYellowText}>OPEN CATEGORY</Text>
                       </Pressable>
 
-                      <Pressable onPress={() => openMap(p)} style={({ pressed }) => [styles.btnDark, pressed && styles.pressed]}>
+                      <Pressable
+                        onPress={() => openMap(p)}
+                        style={({ pressed }) => [styles.btnDark, pressed && styles.pressed]}
+                      >
                         <Image source={ICON_MAP} style={styles.btnIcon} />
                         <Text style={styles.btnDarkText}>MAP</Text>
                       </Pressable>
 
-                      <Pressable onPress={() => onToggle(p.id)} style={({ pressed }) => [styles.btnBookmark, pressed && styles.pressed]}>
+                      <Pressable
+                        onPress={() => onToggle(p.id)}
+                        style={({ pressed }) => [styles.btnBookmark, pressed && styles.pressed]}
+                      >
                         <Image source={ICON_BOOKMARK_FILLED} style={styles.bookIcon} />
                       </Pressable>
                     </View>
@@ -155,7 +164,7 @@ export default function SavedScreen() {
               );
             })}
 
-            <View style={{ height: 18 }} />
+            <View style={{ height: 78 }} />
           </ScrollView>
         )}
       </Animated.View>
@@ -175,14 +184,21 @@ const styles = StyleSheet.create({
   },
   title: { color: '#fff', fontWeight: '900', fontSize: 15, opacity: 0.92 },
 
+  body: { flex: 1 },
+
   list: {
     paddingHorizontal: 18,
     paddingTop: 10,
     gap: 14,
-    paddingBottom: 18,
+    paddingBottom: 78,
   },
 
-  emptyWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 },
+  emptyWrap: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+  },
   emptyText: { color: 'rgba(255,255,255,0.75)', fontWeight: '800' },
 
   card: {
@@ -210,8 +226,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 6,
   },
-
-  stars: { color: '#FFD84D', fontSize: 12, fontWeight: '900', marginBottom: 6 },
 
   coordsText: {
     color: '#FFD84D',
