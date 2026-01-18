@@ -256,7 +256,7 @@ export default function QuizScreen() {
                     },
                   ]}
                 >
-                  The Culture Compass Mercury quiz is 10 tricky questions about Germany: history, culture, mentality, symbols and
+                  The Merknr Culture quiz is 10 tricky questions about Germany: history, culture, mentality, symbols and
                   facts that you might think you know. After successfully passing, you get a digital “Germany Pro” stamp — a sign
                   that you are really familiar with the country.
                 </Animated.Text>
